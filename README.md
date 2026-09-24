@@ -33,16 +33,22 @@ terraform apply
 
 ## Architecture
 
-The architecture diagram is maintained as an editable [draw.io](https://www.drawio.com/) file at [docs/architecture.drawio](docs/architecture.drawio), generated programmatically with the [drawpyo](https://github.com/MerrimanInd/drawpyo) Python library (the only Python package for building `.drawio` files). GitHub renders `.drawio` files natively — open the file directly in this repository to view or edit the diagram, or open it locally with the draw.io desktop app / [app.diagrams.net](https://app.diagrams.net/).
+![Architecture diagram](docs/architecture.svg)
 
-It shows the same flow described above: Images Bucket (S3) → Image Uploaded (SNS) → Labeling Queue (SQS) → `label_images` Lambda (calls Rekognition, writes to DynamoDB) → Indexing Queue (SQS) → `index_image` Lambda (calls the Hugging Face embeddings API, updates DynamoDB); separately, a Search Client hits API Gateway's `GET /search` → `search_images` Lambda (also calls Hugging Face) → reads DynamoDB via scan + cosine similarity. This Hugging Face embedding lane is what replaces Amazon OpenSearch Service, which the free "floci" emulator doesn't support.
+Images Bucket (S3) → Image Uploaded (SNS) → Labeling Queue (SQS) → `label_images` Lambda (calls Rekognition, writes to DynamoDB) → Indexing Queue (SQS) → `index_image` Lambda (calls the Hugging Face embeddings API, updates DynamoDB); separately, a Search Client hits API Gateway's `GET /search` → `search_images` Lambda (also calls Hugging Face) → reads DynamoDB via scan + cosine similarity. This Hugging Face embedding lane is what replaces Amazon OpenSearch Service, which the free "floci" emulator doesn't support.
 
-To regenerate the diagram after changing the architecture:
+The diagram source is a real, editable [draw.io](https://www.drawio.com/) file at [docs/architecture.drawio](docs/architecture.drawio), generated programmatically with the [drawpyo](https://github.com/MerrimanInd/drawpyo) Python library. Open the `.drawio` file directly on GitHub or with the draw.io desktop app / [app.diagrams.net](https://app.diagrams.net/) to edit it.
+
+To regenerate the diagram (`.drawio` source + the `.svg`/`.png` embedded above) after changing the architecture:
 
 ```bash
 python3 -m venv .diagram-venv
 .diagram-venv/bin/pip install drawpyo
 .diagram-venv/bin/python scripts/generate_diagram.py
+
+# rasterize the .drawio file to svg/png (used by the README) via headless draw.io
+docker run --rm -v "$PWD/docs":/data -w /data rlespinasse/drawio-export -f svg -o . --output-mode relative --remove-page-suffix .
+docker run --rm -v "$PWD/docs":/data -w /data rlespinasse/drawio-export -f png -o . --output-mode relative --remove-page-suffix -t .
 ```
 
 ## Test the pipeline

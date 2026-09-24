@@ -66,14 +66,14 @@ def build_diagram():
     page.name = "Image Search"
 
     # Storage / trigger row
-    images_bucket = add_node(page, "Images Bucket\n(S3)", 40, 80, "productIcon", "s3", "#7AA116")
-    image_uploaded = add_node(page, "Image Uploaded\n(SNS)", 200, 80, "productIcon", "sns", "#E7157B")
-    labeling_queue = add_node(page, "Labeling Queue\n(SQS)", 360, 80, "productIcon", "sqs", "#E7157B")
-    label_images = add_node(page, "label_images\n(Lambda)", 520, 80, "productIcon", "lambda", "#ED7100")
-    rekognition = add_node(page, "Rekognition", 520, -40, "productIcon", "rekognition", "#01A88D")
+    images_bucket = add_node(page, "Images Bucket\n(S3)", 40, 80, "resourceIcon", "bucket", "#7AA116")
+    image_uploaded = add_node(page, "Image Uploaded\n(SNS)", 200, 80, "resourceIcon", "sns", "#E7157B")
+    labeling_queue = add_node(page, "Labeling Queue\n(SQS)", 360, 80, "resourceIcon", "sqs", "#E7157B")
+    label_images = add_node(page, "label_images\n(Lambda)", 520, 80, "resourceIcon", "lambda_function", "#ED7100")
+    rekognition = add_node(page, "Rekognition", 520, -40, "resourceIcon", "rekognition_2", "#01A88D")
 
     indexing_queue = add_node(page, "Indexing Queue\n(SQS)", 680, 80, "resourceIcon", "sqs", "#E7157B")
-    index_image = add_node(page, "index_image\n(Lambda)", 840, 80, "productIcon", "lambda", "#ED7100")
+    index_image = add_node(page, "index_image\n(Lambda)", 840, 80, "resourceIcon", "lambda_function", "#ED7100")
     hugging_face_1 = add_note(page, "\U0001F917 Hugging Face\nembeddings API", 800, -50, width=160)
 
     image_catalog = add_node(page, "Image Catalog\n(DynamoDB)", 1000, 80, "resourceIcon", "dynamodb", "#C925D1", height=80)
@@ -81,7 +81,7 @@ def build_diagram():
     # Search lane
     search_client = add_node(page, "Search Client", 40, 260, "resourceIcon", "client", "#232F3E")
     api_gateway = add_node(page, "GET /search\n(API Gateway)", 200, 260, "resourceIcon", "api_gateway", "#E7157B")
-    search_images = add_node(page, "search_images\n(Lambda)", 360, 260, "productIcon", "lambda", "#ED7100")
+    search_images = add_node(page, "search_images\n(Lambda)", 360, 260, "resourceIcon", "lambda_function", "#ED7100")
     hugging_face_2 = add_note(page, "\U0001F917 Hugging Face\nembeddings API", 320, 360, width=160)
 
     add_edge(page, images_bucket, image_uploaded)
