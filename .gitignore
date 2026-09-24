@@ -13,3 +13,4 @@ src/**/*.pyc
 
 # Local env
 .env
+.diagram-venv/
